@@ -7,7 +7,7 @@ const getOneCategory = async(id) => {
     })
 }
 const getAllCategories = async() => {
-    return await Category.find();
+    return await Category.find().populate("subCategoryIds");
 }
 const createOneCategory = async(data) => {
     return await Category.create({
@@ -15,7 +15,7 @@ const createOneCategory = async(data) => {
     })
 }
 const updateOneCategory = async(id, data) => {
-    return await Category.updateOne({
+    await Category.updateOne({
         _id: mongoose.Types.ObjectId(id)
     }, {
         $set: {
@@ -24,6 +24,7 @@ const updateOneCategory = async(id, data) => {
     }, {
         upsert: true
     });
+    return getOneCategory(id)
 }
 const deleteOneCategory = async(id) => {
     return await Category.deleteOne({
