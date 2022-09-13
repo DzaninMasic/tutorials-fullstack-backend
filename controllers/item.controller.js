@@ -12,9 +12,15 @@ const getItemNameAndSubcategoryName=async(req, res) => {
 
 const getAllItems=async(req, res) => {
     try{
-        const item=await itemServiceHandler.getAllItems()
-        return res.send(item)
+        const{page, limit} = req.query;
+        const item=await itemServiceHandler.getAllItems(page, limit)
+        const count=await itemServiceHandler.countAllItems()
+        return res.send({
+            item,
+            count : count
+        })
     }catch(e){
+        console.log("testbest", e.message)
         return res.send({msg: 'Internal server error'}).status(500)
     }
 }

@@ -10,6 +10,11 @@ const categorySchema=new Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Subcategory'
+    }],
+    itemIds : [{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Item'
     }]
 });
 

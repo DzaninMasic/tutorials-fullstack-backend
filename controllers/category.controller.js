@@ -12,11 +12,13 @@ const getOneCategory = async(req, res) => {
 }
 const getAllCategories = async(req, res) => {
     try{
-        const category = await categoryServiceHandler.getAllCategories();
-        return res.send(category);
-    }
-    catch(e){
-        return res.send({msg: 'Internal server error'}).status(500);
+        const{page, limit} = req.query;
+        const category=await categoryServiceHandler.getAllCategories(page, limit)
+        //const count=await categoryServiceHandler.countAllCategories()
+        return res.send(category)
+    }catch(e){
+        console.log("testbest", e.message)
+        return res.send({msg: 'Internal server error'}).status(500)
     }
 }
 const createOneCategory = async(req, res) => {
