@@ -3,8 +3,23 @@ import Subcategory from "../models/subcategory.model"
 import Item from '../models/item.model'
 import { validateCategory } from './subcategory.service'
 
-const getAllItems = async() => {
-    return await Item.find();
+const getAllItems = async(page, limit) => {
+    if(!page && !limit){
+        return await Item.find();
+    }
+    let newPage = 1;
+    if(page){
+        newPage=page;
+    }
+    let newLimit = 10;
+    if(limit){
+        newLimit=limit;
+    }
+    return await Item.find().sort({name : 1}).limit(newLimit).skip((newPage-1)*newLimit).populate("subCategoryIds")
+}
+
+const countAllItems = async() => {
+    return await Item.count()
 }
 
 const getOneItem = async(id) => {
@@ -99,7 +114,8 @@ const itemServiceHandler = {
     deleteOneItem,
     updateOneItem,
     getItemBySubcategory,
-    getItemNameAndSubcategoryName
+    getItemNameAndSubcategoryName,
+    countAllItems
 }
 
 export default itemServiceHandler
